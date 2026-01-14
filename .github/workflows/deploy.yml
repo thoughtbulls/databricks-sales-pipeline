@@ -30,6 +30,11 @@ jobs:
       - name: Upload repo to Databricks Workspace
         run: |
           databricks workspace import_dir . /Shared/databricks-sales-pipeline -o
+      
+      - name: Configure Jobs API version
+        run: |
+          databricks jobs configure --version=2.1
+
 
       - name: Update Databricks Job
         run: |
