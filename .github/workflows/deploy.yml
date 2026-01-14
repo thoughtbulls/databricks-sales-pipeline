@@ -2,11 +2,17 @@ name: Deploy to Databricks
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    env:
+      DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      # DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
 
     steps:
       - name: Checkout code
@@ -15,20 +21,16 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10.12'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
-          pip install databricks-cli dbx
+          pip install databricks-cli
 
-      - name: Configure Databricks
+      - name: Upload repo to Databricks Workspace
         run: |
-          databricks configure --host $DATABRICKS_HOST --token $DATABRICKS_TOKEN
+          databricks workspace import_dir . /Workspace/Repos/databricks-sales-pipeline -o
 
-      - name: Upload notebooks
+      - name: Update Databricks Job
         run: |
-          databricks workspace import_dir notebooks /Shared/pipeline -o
-
-      - name: Deploy Workflow Job
-        run: |
-          databricks jobs create --json-file workflows/job.yml
+          databricks jobs create --json-file workflows/job.json

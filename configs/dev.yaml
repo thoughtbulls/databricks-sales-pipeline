@@ -1,4 +1,6 @@
 env: dev
 catalog: dev_catalog
-storage_path: s3://dev-sales-data
+schema_bronze: bronze_dev
+schema_silver: silver_dev
+schema_gold: gold_dev
 cluster_workers: 2

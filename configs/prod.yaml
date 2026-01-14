@@ -1,4 +1,6 @@
 env: prod
 catalog: prod_catalog
-storage_path: s3://prod-sales-data
+schema_bronze: bronze
+schema_silver: silver
+schema_gold: gold
 cluster_workers: 5
