@@ -1,0 +1,48 @@
+{
+  "name": "sales_pipeline_job",
+  "tasks": [
+    {
+      "task_key": "bronze_ingestion",
+      "notebook_task": {
+        "notebook_path": "/Shared/pipeline/01_bronze_ingestion"
+      },
+      "job_cluster_key": "sales_job_cluster"
+    },
+    {
+      "task_key": "silver_transformation",
+      "depends_on": [
+        {
+          "task_key": "bronze_ingestion"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Shared/pipeline/02_silver_transformation"
+      },
+      "job_cluster_key": "sales_job_cluster"
+    },
+    {
+      "task_key": "gold_aggregation",
+      "depends_on": [
+        {
+          "task_key": "silver_transformation"
+        }
+      ],
+      "notebook_task": {
+        "notebook_path": "/Shared/pipeline/03_gold_aggregation"
+      },
+      "job_cluster_key": "sales_job_cluster"
+    }
+  ],
+  "job_clusters": [
+    {
+      "job_cluster_key": "sales_job_cluster",
+      "new_cluster": {
+        "spark_version": "13.3.x-scala2.12",
+        "node_type_id": "Standard_DS3_v2",
+        "num_workers": 2,
+        "autotermination_minutes": 60
+      }
+    }
+  ],
+  "max_concurrent_runs": 1
+}
