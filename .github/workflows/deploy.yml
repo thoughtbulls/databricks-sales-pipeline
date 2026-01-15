@@ -31,9 +31,9 @@ jobs:
       #   run: |
       #     databricks jobs configure --version=2.1
 
-      - name: Show Databricks CLI config file
+      - name: Show Databricks CLI version
         run: |
-          cat ~/.databrickscfg
+          databricks version
 
       - name: Verify workspace
         run: |
