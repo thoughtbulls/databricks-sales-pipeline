@@ -23,9 +23,9 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dependencies
+      - name: Install dependencies Databricks CLI (new)
         run: |
-          pip install databricks-cli==0.18.0
+          pip install databricks
 
       - name: Configure Databricks Jobs API version
         run: |
