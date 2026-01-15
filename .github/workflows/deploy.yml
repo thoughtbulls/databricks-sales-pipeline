@@ -37,7 +37,7 @@ jobs:
 
       - name: Verify workspace
         run: |
-          databricks workspace ls /
+          databricks workspace list /
 
       - name: Upload repo to Databricks Workspace
         run: |
