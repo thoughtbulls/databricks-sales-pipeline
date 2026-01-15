@@ -1,5 +1,6 @@
 env: dev
-catalog: dev_catalog
+# catalog: dev_catalog
+catalog: main
 schema_bronze: bronze_dev
 schema_silver: silver_dev
 schema_gold: gold_dev
