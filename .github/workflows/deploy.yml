@@ -27,19 +27,18 @@ jobs:
         run: |
           pip install databricks-cli
 
+      - name: Configure Databricks Jobs API version
+        run: |
+          databricks jobs configure --version=2.1
+
       - name: Verify workspace
         run: |
           databricks workspace ls /
-          
+
       - name: Upload repo to Databricks Workspace
         run: |
           databricks workspace import_dir . /Shared/databricks-sales-pipeline -o
       
-      - name: Configure Jobs API version
-        run: |
-          databricks jobs configure --version=2.1
-
-
       - name: Update Databricks Job
         run: |
           databricks jobs create --json-file workflows/job.json
