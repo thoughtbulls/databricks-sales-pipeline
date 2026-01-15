@@ -38,10 +38,14 @@ jobs:
       - name: Verify workspace
         run: |
           databricks workspace list /
+      
+      - name: Clean Databricks workspace folder
+        run: |
+          databricks workspace rm /Shared/databricks-sales-pipeline --recursive || true
 
       - name: Upload repo to Databricks Workspace
         run: |
-          databricks workspace import-dir . /Shared/databricks-sales-pipeline --overwrite
+          databricks workspace import-dir . /Shared/databricks-sales-pipeline
       
       - name: Update Databricks Job
         run: |
