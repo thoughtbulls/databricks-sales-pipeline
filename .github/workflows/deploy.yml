@@ -31,9 +31,9 @@ jobs:
         run: |
           databricks jobs configure --version=2.1
 
-      - name: Show Jobs API config
+      - name: Show Databricks CLI config file
         run: |
-          databricks jobs configure
+          cat ~/.databrickscfg
 
       - name: Verify workspace
         run: |
