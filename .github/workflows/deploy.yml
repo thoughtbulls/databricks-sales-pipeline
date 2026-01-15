@@ -27,9 +27,9 @@ jobs:
         run: |
           pip install databricks
 
-      - name: Configure Databricks Jobs API version
-        run: |
-          databricks jobs configure --version=2.1
+      # - name: Configure Databricks Jobs API version
+      #   run: |
+      #     databricks jobs configure --version=2.1
 
       - name: Show Databricks CLI config file
         run: |
