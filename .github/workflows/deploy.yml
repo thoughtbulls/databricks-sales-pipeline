@@ -14,11 +14,7 @@ jobs:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
-      # run: |
-      #   databricks version
-      #   echo "Updating job id: $DATABRICKS_JOB_ID"
-      #   databricks jobs reset $DATABRICKS_JOB_ID --json-file workflows/job.json
-
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,32 +24,36 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Databricks CLI (official)
+      - name: Install Databricks CLI (legacy 0.18.0)
         run: |
-          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
-
-      # - name: Configure Databricks Jobs API version
-      #   run: |
-      #     databricks jobs configure --version=2.1
+          pip uninstall -y databricks databricks-cli || true
+          pip install databricks-cli==0.18.0
 
       - name: Show Databricks CLI version
         run: |
           databricks version
-     
-      - name: Clean Databricks workspace folder
-        run: |
-          databricks workspace rm /Shared/databricks-sales-pipeline --recursive || true
 
-      - name: Upload repo to Databricks Workspace
+      - name: Validate Job ID
         run: |
-          databricks workspace import-dir . /Shared/databricks-sales-pipeline
+          if [ -z "$DATABRICKS_JOB_ID" ]; then
+            echo "DATABRICKS_JOB_ID is not set"
+            exit 1
+          fi
+          echo "Using Job ID: $DATABRICKS_JOB_ID"
 
       - name: Verify job exists
         run: |
           databricks jobs get $DATABRICKS_JOB_ID
-      
+
+      - name: Clean Databricks workspace folder
+        run: |
+          databricks workspace delete /Shared/databricks-sales-pipeline --recursive || true
+
+      - name: Upload repo to Databricks Workspace
+        run: |
+          databricks workspace import-dir . /Shared/databricks-sales-pipeline -o
+
       - name: Update Databricks Job
         run: |
-          databricks version
           echo "Updating job id: $DATABRICKS_JOB_ID"
-          databricks jobs reset $DATABRICKS_JOB_ID --json-file workflows/job.json
+          databricks jobs reset $DATABRICKS_JOB_ID --json @workflows/job.json
