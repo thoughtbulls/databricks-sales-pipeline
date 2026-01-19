@@ -50,5 +50,5 @@ jobs:
       - name: Update Databricks Job
         run: |
           databricks jobs reset \
-            --job-id $DATABRICKS_JOB_ID \ 
+            $DATABRICKS_JOB_ID \ 
             --json @workflows/job.json
