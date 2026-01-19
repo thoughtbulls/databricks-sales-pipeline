@@ -49,7 +49,7 @@ jobs:
 
       - name: Verify job exists
         run: |
-          databricks jobs get --job-id $DATABRICKS_JOB_ID
+          databricks jobs get $DATABRICKS_JOB_ID
       
       - name: Update Databricks Job
         run: |
