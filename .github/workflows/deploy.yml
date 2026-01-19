@@ -17,6 +17,7 @@ jobs:
       run: |
         databricks version
         echo "Updating job id: $DATABRICKS_JOB_ID"
+        databricks jobs reset $DATABRICKS_JOB_ID --json-file workflows/job.json
 
     steps:
       - name: Checkout code
@@ -51,6 +52,6 @@ jobs:
         run: |
           databricks jobs get $DATABRICKS_JOB_ID
       
-      - name: Update Databricks Job
-        run: |
-          databricks jobs reset --job-id $DATABRICKS_JOB_ID --json-file workflows/job.json
+      # - name: Update Databricks Job
+      #   run: |
+      #     databricks jobs reset --job-id $DATABRICKS_JOB_ID --json-file workflows/job.json
