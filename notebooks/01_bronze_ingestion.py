@@ -1,12 +1,14 @@
-from pyspark.sql.functions import current_timestamp
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
-
 # Databricks job parameter
 dbutils.widgets.text("env", "dev")
 env = dbutils.widgets.get("env")
 
-load_config = dbutils.import_notebook('src.config_loader').load_config
-cfg = load_config(env)  # Ensure load_config is adapted to read from DBFS or use a Databricks-compatible method.
+from src.config_loader import load_config
+from pyspark.sql.functions import current_timestamp
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
+
+
+# load_config = dbutils.import_notebook('src.config_loader').load_config  // for notebook only
+cfg = load_config(env) 
 
 catalog = cfg["catalog"]
 bronze_schema = cfg["schema_bronze"]

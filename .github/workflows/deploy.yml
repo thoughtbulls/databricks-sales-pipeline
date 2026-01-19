@@ -12,7 +12,7 @@ jobs:
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      # DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
+      DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
 
     steps:
       - name: Checkout code
@@ -49,4 +49,6 @@ jobs:
       
       - name: Update Databricks Job
         run: |
-          databricks jobs create --json @workflows/job.json
+          databricks jobs reset \
+            --job-id $DATABRICKS_JOB_ID \ 
+            --json @workflows/job.json
