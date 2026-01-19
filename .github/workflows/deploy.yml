@@ -14,6 +14,9 @@ jobs:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
+      run: |
+        databricks version
+        echo "Updating job id: $DATABRICKS_JOB_ID"
 
     steps:
       - name: Checkout code
@@ -35,11 +38,7 @@ jobs:
       - name: Show Databricks CLI version
         run: |
           databricks version
-
-      - name: Verify workspace
-        run: |
-          databricks workspace list /
-      
+     
       - name: Clean Databricks workspace folder
         run: |
           databricks workspace rm /Shared/databricks-sales-pipeline --recursive || true
@@ -48,25 +47,10 @@ jobs:
         run: |
           databricks workspace import-dir . /Shared/databricks-sales-pipeline
 
-      - name: Debug Job ID
-        run: echo "JOB_ID=$DATABRICKS_JOB_ID"
-
       - name: Verify job exists
         run: |
-          databricks jobs get $DATABRICKS_JOB_ID
-        
-      - name: Validate Job ID
-        env:
-          DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
-        run: |
-          if [ -z "$DATABRICKS_JOB_ID" ]; then
-            echo "❌ DATABRICKS_JOB_ID is empty"
-            exit 1
-          fi
-          echo "✅ Using Job ID: $DATABRICKS_JOB_ID"
-
+          databricks jobs get --job-id $DATABRICKS_JOB_ID
       
       - name: Update Databricks Job
         run: |
-          echo "Updating job id: $DATABRICKS_JOB_ID"
-          databricks jobs reset $DATABRICKS_JOB_ID --json @workflows/job.json
+          databricks jobs reset --job-id $DATABRICKS_JOB_ID --json-file workflows/job.json
