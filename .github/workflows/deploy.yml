@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: databricks
 
     env:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -46,6 +47,9 @@ jobs:
       - name: Upload repo to Databricks Workspace
         run: |
           databricks workspace import-dir . /Shared/databricks-sales-pipeline
+
+      - name: Debug Job ID
+        run: echo "JOB_ID=$DATABRICKS_JOB_ID"
       
       - name: Update Databricks Job
         run: |

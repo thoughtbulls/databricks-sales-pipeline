@@ -1,4 +1,5 @@
 {
+  "new_settings": {
   "name": "sales_pipeline_job",
   "tasks": [
     {
@@ -49,4 +50,5 @@
       }
     }
   ]
+}
 }
