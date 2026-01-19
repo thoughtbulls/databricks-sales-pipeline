@@ -1,7 +1,7 @@
 env: dev
-# catalog: dev_catalog
-catalog: main
-schema_bronze: bronze_dev
-schema_silver: silver_dev
-schema_gold: gold_dev
+raw_data_path: s3://amzn-s3-de-projects/raw
+catalog: dev_catalog
+schema_bronze: bronze
+schema_silver: silver
+schema_gold: gold
 cluster_workers: 2
