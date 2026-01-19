@@ -31,7 +31,7 @@ jobs:
 
       - name: Show Databricks CLI version
         run: |
-          databricks version
+          databricks --version
 
       - name: Validate Job ID
         run: |
