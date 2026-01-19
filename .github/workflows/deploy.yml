@@ -57,7 +57,7 @@ jobs:
         
       - name: Show workspace info
         run: |
-          databricks workspace ls /
+          databricks workspace list /
       
       - name: Update Databricks Job
         run: |
