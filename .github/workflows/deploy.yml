@@ -55,10 +55,18 @@ jobs:
         run: |
           databricks jobs get $DATABRICKS_JOB_ID
         
-      - name: Show workspace info
+      - name: Validate Job ID
+        env:
+          DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
         run: |
-          databricks workspace list /Shared/
+          if [ -z "$DATABRICKS_JOB_ID" ]; then
+            echo "❌ DATABRICKS_JOB_ID is empty"
+            exit 1
+          fi
+          echo "✅ Using Job ID: $DATABRICKS_JOB_ID"
+
       
       - name: Update Databricks Job
         run: |
+          echo "Updating job id: $DATABRICKS_JOB_ID"
           databricks jobs reset $DATABRICKS_JOB_ID --json @workflows/job.json
