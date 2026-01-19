@@ -12,14 +12,14 @@ silver_schema = cfg["schema_silver"]
 
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {silver_schema}")
 
-df = spark.table(f"{bronze_schema}.sales")
+df = spark.table(f"{bronze_schema}.orders")
 
 clean_df = (
     df.dropna(subset=["order_id"])
-      .withColumn("amount", col("amount").cast("double"))
+    #   .withColumn("amount", col("amount").cast("double"))
 )
 
-window = Window.partitionBy("order_id").orderBy(col("updated_at").desc())
+window = Window.partitionBy("order_id").orderBy(col("order_date").desc())
 
 dedup_df = (
     clean_df
@@ -30,6 +30,6 @@ dedup_df = (
 
 dedup_df.write.format("delta") \
     .mode("overwrite") \
-    .saveAsTable(f"{silver_schema}.sales")
+    .saveAsTable(f"{silver_schema}.orders")
 
 print(f"Silver transformation completed for env={env}")

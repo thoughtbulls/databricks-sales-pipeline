@@ -11,18 +11,17 @@ gold_schema = cfg["schema_gold"]
 
 spark.sql(f"CREATE SCHEMA IF NOT EXISTS {gold_schema}")
 
-df = spark.table(f"{silver_schema}.sales")
+df = spark.table(f"{silver_schema}.orders")
 
-fact_sales = (
+fact_orders = (
     df.groupBy("order_date")
       .agg(
-          sum("amount").alias("total_sales"),
           count("order_id").alias("order_count")
       )
 )
 
-fact_sales.write.format("delta") \
+fact_orders.write.format("delta") \
     .mode("overwrite") \
-    .saveAsTable(f"{gold_schema}.fact_sales")
+    .saveAsTable(f"{gold_schema}.fact_orders")
 
 print(f"Gold aggregation completed for env={env}")
