@@ -51,7 +51,7 @@ jobs:
 
       - name: Upload repo to Databricks Workspace
         run: |
-          databricks workspace import-dir . /Shared/databricks-sales-pipeline -o
+          databricks workspace import_dir . /Shared/databricks-sales-pipeline -o
 
       - name: Update Databricks Job
         run: |
