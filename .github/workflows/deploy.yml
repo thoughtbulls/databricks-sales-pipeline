@@ -54,6 +54,10 @@ jobs:
       - name: Verify job exists
         run: |
           databricks jobs get $DATABRICKS_JOB_ID
+        
+      - name: Show workspace info
+        run: |
+          databricks workspace ls /
       
       - name: Update Databricks Job
         run: |
