@@ -50,6 +50,10 @@ jobs:
 
       - name: Debug Job ID
         run: echo "JOB_ID=$DATABRICKS_JOB_ID"
+
+      - name: Verify job exists
+        run: |
+          databricks jobs get $DATABRICKS_JOB_ID
       
       - name: Update Databricks Job
         run: |
