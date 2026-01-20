@@ -52,7 +52,7 @@ jobs:
 
       - name: Upload config files to Volume
         run: |
-          databricks fs cp configs/dev.yaml /Volumes/dev_catalog/pipelines/configs/dev.yaml --overwrite
+          databricks fs cp configs/dev.yaml dbfs:/Volumes/dev_catalog/pipelines/configs/dev.yaml --overwrite
 
       - name: Update job api version to 2.1
         run: |
