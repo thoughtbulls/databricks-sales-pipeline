@@ -32,7 +32,7 @@ jobs:
       - name: Show Databricks CLI version
         run: |
           databricks --version
-          
+
       - name: Verify job exists
         run: |
           databricks jobs get --job-id $DATABRICKS_JOB_ID
@@ -44,18 +44,15 @@ jobs:
 
       - name: Upload notebooks to Databricks Workspace
         run: |
-          databricks workspace import_dir notebooks \ 
-          /Shared/databricks-sales-pipeline/notebooks -o
+          databricks workspace import_dir notebooks /Shared/databricks-sales-pipeline/notebooks -o
       
       - name: Upload src to Databricks Workspace
         run: |
-          databricks workspace import_dir src \ 
-          /Shared/databricks-sales-pipeline/src -o
+          databricks workspace import_dir src /Shared/databricks-sales-pipeline/src -o
 
       - name: Upload config files to Volume
         run: |
-          databricks fs cp configs/dev.yaml \
-            /Volumes/dev_catalog/pipelines/configs/dev.yaml --overwrite
+          databricks fs cp configs/dev.yaml /Volumes/dev_catalog/pipelines/configs/dev.yaml --overwrite
 
       - name: Update job api version to 2.1
         run: |
