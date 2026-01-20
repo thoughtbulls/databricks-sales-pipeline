@@ -32,15 +32,7 @@ jobs:
       - name: Show Databricks CLI version
         run: |
           databricks --version
-
-      - name: Validate Job ID
-        run: |
-          if [ -z "$DATABRICKS_JOB_ID" ]; then
-            echo "DATABRICKS_JOB_ID is not set"
-            exit 1
-          fi
-          echo "Using Job ID: $DATABRICKS_JOB_ID"
-
+          
       - name: Verify job exists
         run: |
           databricks jobs get --job-id $DATABRICKS_JOB_ID
@@ -48,19 +40,22 @@ jobs:
       - name: Clean Databricks workspace folder
         run: |
           databricks workspace delete /Shared/databricks-sales-pipeline --recursive || true
+          databricks workspace mkdirs /Shared/databricks-sales-pipeline
 
       - name: Upload notebooks to Databricks Workspace
         run: |
-          databricks workspace import_dir . /Shared/databricks-sales-pipeline/notebooks -o
+          databricks workspace import_dir notebooks \ 
+          /Shared/databricks-sales-pipeline/notebooks -o
       
       - name: Upload src to Databricks Workspace
         run: |
-          databricks workspace import_dir . /Shared/databricks-sales-pipeline/src -o
+          databricks workspace import_dir src \ 
+          /Shared/databricks-sales-pipeline/src -o
 
-      - name: Upload config files to Databricks dbfs
+      - name: Upload config files to Volume
         run: |
-          databricks fs mkdirs dbfs:/pipelines/databricks-sales-pipeline/configs
-          databricks fs cp -r configs dbfs:/pipelines/databricks-sales-pipeline/configs
+          databricks fs cp configs/dev.yaml \
+            /Volumes/dev_catalog/pipelines/configs/dev.yaml --overwrite
 
       - name: Update job api version to 2.1
         run: |
