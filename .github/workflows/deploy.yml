@@ -49,9 +49,18 @@ jobs:
         run: |
           databricks workspace delete /Shared/databricks-sales-pipeline --recursive || true
 
-      - name: Upload repo to Databricks Workspace
+      - name: Upload notebooks to Databricks Workspace
         run: |
-          databricks workspace import_dir . /Shared/databricks-sales-pipeline -o
+          databricks workspace import_dir . /Shared/databricks-sales-pipeline/notebooks -o
+      
+      - name: Upload src to Databricks Workspace
+        run: |
+          databricks workspace import_dir . /Shared/databricks-sales-pipeline/src -o
+
+      - name: Upload config files to Databricks dbfs
+        run: |
+          databricks fs mkdirs dbfs:/pipelines/databricks-sales-pipeline/configs
+          databricks fs cp -r configs dbfs:/pipelines/databricks-sales-pipeline/configs
 
       - name: Update job api version to 2.1
         run: |

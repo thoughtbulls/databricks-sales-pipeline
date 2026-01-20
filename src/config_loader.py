@@ -1,10 +1,10 @@
 import yaml
 from typing import Dict
 
-BASE_PATH = "/Shared/databricks-sales-pipeline"
+BASE_PATH = "dbfs:/pipelines/databricks-sales-pipeline/configs"
 
 def load_config(env: str) -> Dict:
-    config_path = f"{BASE_PATH}/configs/{env}.yaml"
+    path = f"{BASE_PATH}/{env}.yaml"
 
-    with open(config_path, "r") as f:
-        return yaml.safe_load(f)
+    raw = dbutils.fs.head(path)
+    return yaml.safe_load(raw)
