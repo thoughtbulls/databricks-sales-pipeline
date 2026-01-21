@@ -92,4 +92,4 @@ jobs:
           echo "Updating job id: $DATABRICKS_JOB_ID"
           databricks jobs reset --job-id $DATABRICKS_JOB_ID \
             --json-file workflows/job.json
-          databricks jobs run-now $DATABRICKS_JOB_ID
+          databricks jobs run-now --job-id $DATABRICKS_JOB_ID
