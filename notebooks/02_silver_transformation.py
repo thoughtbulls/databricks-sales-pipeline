@@ -5,11 +5,13 @@ import sys
 
 sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
 
-from src.config_loader import load_config
+from src.config_loader import load_config_from_string
 from pyspark.sql.functions import col, row_number
 from pyspark.sql.window import Window
 
-cfg = load_config(env)
+config_path = f"/Volumes/dev_catalog/pipelines/configs/{env}.yaml"
+raw_yaml = dbutils.fs.head(config_path)
+cfg = load_config_from_string(raw_yaml) 
 
 bronze_schema = cfg["schema_bronze"]
 silver_schema = cfg["schema_silver"]

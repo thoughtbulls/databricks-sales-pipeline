@@ -1,10 +1,9 @@
 import yaml
 from typing import Dict
 
-BASE_PATH = "/Volumes/dev_catalog/pipelines/configs"
+import yaml
+from typing import Dict
 
-def load_config(env: str) -> Dict:
-    path = f"{BASE_PATH}/{env}.yaml"
-
-    raw = dbutils.fs.head(path)
+def load_config_from_string(raw: str) -> Dict:
     return yaml.safe_load(raw)
+

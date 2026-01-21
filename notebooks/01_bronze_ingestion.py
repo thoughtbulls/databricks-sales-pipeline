@@ -6,13 +6,14 @@ import sys
 
 sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
 
-from src.config_loader import load_config
+from src.config_loader import load_config_from_string
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
 
 
-# load_config = dbutils.import_notebook('src.config_loader').load_config  // for notebook only
-cfg = load_config(env) 
+config_path = f"/Volumes/dev_catalog/pipelines/configs/{env}.yaml"
+raw_yaml = dbutils.fs.head(config_path)
+cfg = load_config_from_string(raw_yaml) 
 
 catalog = cfg["catalog"]
 bronze_schema = cfg["schema_bronze"]
