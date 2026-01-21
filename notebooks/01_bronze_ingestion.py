@@ -11,7 +11,7 @@ from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
 
 
-config_path = f"/Volumes/dev_catalog/pipelines/configs/{env}.yaml"
+config_path = f"dbfs:/Volumes/dev_catalog/pipelines/configs/{env}.yaml"
 raw_yaml = dbutils.fs.head(config_path)
 cfg = load_config_from_string(raw_yaml) 
 
