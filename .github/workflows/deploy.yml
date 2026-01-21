@@ -14,52 +14,80 @@ jobs:
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
-      DATABRICKS_JOBS_API_VERSION: 2.1
 
     steps:
+      # -------------------------------------------------
+      # 1. Checkout
+      # -------------------------------------------------
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Databricks CLI (NEW)
+      # -------------------------------------------------
+      # 2. Python
+      # -------------------------------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      # =================================================
+      # PART A — NEW DATABRICKS CLI (workspace / volumes)
+      # =================================================
+      - name: Install NEW Databricks CLI
         run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip
-          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sudo sh
+          curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | bash
+          databricks version
 
-      - name: Show Databricks CLI version
-        run: databricks version
-
-      # ---- VERIFY AUTH & JOB ----
-      - name: Verify job exists
-        run: |
-          databricks jobs get $DATABRICKS_JOB_ID
-
-      # ---- WORKSPACE DEPLOY ----
+      # ---- Workspace cleanup ----
       - name: Clean Databricks workspace folder
         run: |
           databricks workspace delete /Shared/databricks-sales-pipeline --recursive || true
           databricks workspace mkdirs /Shared/databricks-sales-pipeline
 
-      - name: Upload notebooks to Databricks Workspace
+      # ---- Upload notebooks ----
+      - name: Upload notebooks
         run: |
           databricks workspace import-dir notebooks \
-            /Shared/databricks-sales-pipeline/notebooks --overwrite
+            /Shared/databricks-sales-pipeline/notebooks \
+            --overwrite
 
-      - name: Upload src to Databricks Workspace
+      # ---- Upload src (python only, still OK) ----
+      - name: Upload src
         run: |
           databricks workspace import-dir src \
-            /Shared/databricks-sales-pipeline/src --overwrite
+            /Shared/databricks-sales-pipeline/src \
+            --overwrite
 
-      # ---- CONFIG → VOLUMES ----
+      # ---- Upload configs to Volume (NEW CLI supports dbfs:/Volumes) ----
       - name: Upload config files to Volume
         run: |
           databricks fs mkdirs dbfs:/Volumes/dev_catalog/pipelines/configs || true
           databricks fs cp configs/dev.yaml \
-            dbfs:/Volumes/dev_catalog/pipelines/configs/dev.yaml --overwrite
+            dbfs:/Volumes/dev_catalog/pipelines/configs/dev.yaml \
+            --overwrite
 
-      # ---- JOB UPDATE ----
+      # =================================================
+      # PART B — LEGACY CLI (Jobs API 2.1 ONLY)
+      # =================================================
+      - name: Switch to LEGACY Databricks CLI
+        run: |
+          pip uninstall -y databricks databricks-cli || true
+          pip install databricks-cli==0.18.0
+          databricks --version
+
+      # ---- Enable Jobs API 2.1 ----
+      - name: Configure Jobs API 2.1
+        run: |
+          databricks jobs configure --version=2.1
+
+      # ---- Safety check ----
+      - name: Verify job exists
+        run: |
+          databricks jobs get --job-id $DATABRICKS_JOB_ID
+
+      # ---- Reset job (THIS IS THE KEY FIX) ----
       - name: Update Databricks Job
         run: |
           echo "Updating job id: $DATABRICKS_JOB_ID"
           databricks jobs reset $DATABRICKS_JOB_ID \
-            --json @workflows/job.json
+            --json-file workflows/job.json
