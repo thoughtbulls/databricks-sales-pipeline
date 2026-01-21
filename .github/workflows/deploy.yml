@@ -61,4 +61,4 @@ jobs:
         run: |
           echo "Updating job id: $DATABRICKS_JOB_ID"
           databricks jobs reset $DATABRICKS_JOB_ID \
-            --json-file workflows/job.json
+            --json @workflows/job.json
