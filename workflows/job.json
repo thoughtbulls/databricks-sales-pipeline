@@ -7,7 +7,10 @@
         "python_file": "/Workspace/Shared/databricks-sales-pipeline/notebooks/01_bronze_ingestion.py",
         "parameters": ["--env", "dev"]
       },
-      "job_cluster_key": "sales_cluster"
+      "job_cluster_key": "sales_cluster",
+      "libraries": [
+        { "pypi": { "package": "pyyaml" } }
+      ]
     },
     {
       "task_key": "silver",
@@ -16,7 +19,10 @@
         "python_file": "/Workspace/Shared/databricks-sales-pipeline/notebooks/02_silver_transformation.py",
         "parameters": ["--env", "dev"]
       },
-      "job_cluster_key": "sales_cluster"
+      "job_cluster_key": "sales_cluster",
+      "libraries": [
+        { "pypi": { "package": "pyyaml" } }
+      ]
     },
     {
       "task_key": "gold",
@@ -25,7 +31,10 @@
         "python_file": "/Workspace/Shared/databricks-sales-pipeline/notebooks/03_gold_aggregation.py",
         "parameters": ["--env", "dev"]
       },
-      "job_cluster_key": "sales_cluster"
+      "job_cluster_key": "sales_cluster",
+      "libraries": [
+        { "pypi": { "package": "pyyaml" } }
+      ]
     }
   ],
   "job_clusters": [
@@ -34,10 +43,7 @@
       "new_cluster": {
         "spark_version": "13.3.x-scala2.12",
         "node_type_id": "m4.large",
-        "num_workers": 1,
-        "libraries": [
-        { "pypi": { "package": "pyyaml" } }
-        ],
+        "num_workers": 1, 
         "aws_attributes": {
           "ebs_volume_type": "GENERAL_PURPOSE_SSD",
           "ebs_volume_count": 1,
