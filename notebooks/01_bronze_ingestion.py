@@ -2,6 +2,10 @@
 dbutils.widgets.text("env", "dev")
 env = dbutils.widgets.get("env")
 
+import sys
+
+sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
+
 from src.config_loader import load_config
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType

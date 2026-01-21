@@ -1,6 +1,10 @@
 dbutils.widgets.text("env", "dev")
 env = dbutils.widgets.get("env")
 
+import sys
+
+sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
+
 from src.config_loader import load_config
 from pyspark.sql.functions import col, row_number
 from pyspark.sql.window import Window
