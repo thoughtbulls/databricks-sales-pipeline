@@ -14,12 +14,13 @@ raw = spark.read.text("/Volumes/dev_catalog/pipelines/configs/dev.yaml")
 raw_yaml = "\n".join([r.value for r in raw.collect()])
 cfg = load_config_from_string(raw_yaml) 
 
+catalog = cfg["catalog"]
 silver_schema = cfg["schema_silver"]
 gold_schema = cfg["schema_gold"]
 
-spark.sql(f"CREATE SCHEMA IF NOT EXISTS {gold_schema}")
+spark.sql(f"CREATE SCHEMA IF NOT EXISTS {catalog}.{gold_schema}")
 
-df = spark.table(f"{silver_schema}.orders")
+df = spark.table(f"{catalog}.{silver_schema}.orders")
 
 fact_orders = (
     df.groupBy("order_date")
@@ -30,6 +31,6 @@ fact_orders = (
 
 fact_orders.write.format("delta") \
     .mode("overwrite") \
-    .saveAsTable(f"{gold_schema}.fact_orders")
+    .saveAsTable(f"{catalog}.{gold_schema}.fact_orders")
 
 print(f"Gold aggregation completed for env={env}")
