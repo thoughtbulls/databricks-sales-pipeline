@@ -39,7 +39,7 @@ display(df)
 
 df.withColumn("ingesttime", current_timestamp()) \
   .write.format("delta") \
-  .mode("append") \
+  .mode("overwrite") \
   .saveAsTable(f"{catalog}.{bronze_schema}.orders")
 
 print(f"Bronze load completed for env={env}")
