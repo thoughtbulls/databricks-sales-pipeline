@@ -44,6 +44,10 @@
         "spark_version": "13.3.x-scala2.12",
         "node_type_id": "m4.large",
         "num_workers": 1, 
+
+        "data_security_mode": "SINGLE_USER",
+        "runtime_engine": "STANDARD",
+
         "aws_attributes": {
           "ebs_volume_type": "GENERAL_PURPOSE_SSD",
           "ebs_volume_count": 1,
