@@ -9,8 +9,10 @@ from src.config_loader import load_config_from_string
 from pyspark.sql.functions import col, row_number
 from pyspark.sql.window import Window
 
-config_path = f"dbfs:/Volumes/dev_catalog/pipelines/configs/{env}.yaml"
-raw_yaml = dbutils.fs.head(config_path)
+# config_path = f"dbfs:/Volumes/dev_catalog/pipelines/configs/{env}.yaml"
+# raw_yaml = dbutils.fs.head(config_path)
+raw = spark.read.text("/Volumes/dev_catalog/pipelines/configs/dev.yaml")
+raw_yaml = "\n".join([r.value for r in raw.collect()])
 cfg = load_config_from_string(raw_yaml) 
 
 bronze_schema = cfg["schema_bronze"]

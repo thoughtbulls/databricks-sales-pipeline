@@ -8,11 +8,13 @@ sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
 
 from src.config_loader import load_config_from_string
 from pyspark.sql.functions import current_timestamp
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
+from pyspark.sql.types import StructType, StringType, IntegerType, DateType
 
 
-config_path = f"dbfs:/Volumes/dev_catalog/pipelines/configs/{env}.yaml"
-raw_yaml = dbutils.fs.head(config_path)
+# config_path = f"dbfs:/Volumes/dev_catalog/pipelines/configs/{env}.yaml"
+# raw_yaml = dbutils.fs.head(config_path)
+raw = spark.read.text("/Volumes/dev_catalog/pipelines/configs/dev.yaml")
+raw_yaml = "\n".join([r.value for r in raw.collect()])
 cfg = load_config_from_string(raw_yaml) 
 
 catalog = cfg["catalog"]
