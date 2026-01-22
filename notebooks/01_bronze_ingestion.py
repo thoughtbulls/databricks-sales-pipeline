@@ -22,12 +22,12 @@ bronze_schema = cfg["schema_bronze"]
 raw_path = cfg["raw_data_path"]
 orders_file = raw_path + "/orders"
 
-order_schema = StructType(
+order_schema = StructType([
     StructField("order_id", IntegerType(), True),
     StructField("order_date", DateType(), True),
     StructField("order_customer", IntegerType(), True),
     StructField("order_status", StringType(), True)
-)
+])
 
 df = (
  spark.read.schema(order_schema)
