@@ -1,19 +1,40 @@
 name: Deploy to Databricks
 
+# on:
+#   push:
+#     branches: [ main, master ]
+#   workflow_dispatch:
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     environment: databricks
+
+#     env:
+#       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+#       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+#       DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
+
 on:
-  push:
-    branches: [ main, master ]
   workflow_dispatch:
+    inputs:
+      env:
+        description: "Target environment"
+        required: true
+        type: choice
+        options: [dev, qa, prod]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: databricks
+    environment: ${{ inputs.env }}
 
     env:
+      ENV: ${{ inputs.env }}
       DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
       DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       DATABRICKS_JOB_ID: ${{ secrets.DATABRICKS_JOB_ID }}
+
 
     steps:
       # -------------------------------------------------
@@ -94,6 +115,12 @@ jobs:
             --json-file workflows/job.json
 
       # ---- Triggered the job ---------
-      - name: Run Databricks Job
+      # - name: Run Databricks Job
+      #   run: |
+      #     databricks jobs run-now --job-id $DATABRICKS_JOB_ID
+      - name: Run Job
         run: |
-          databricks jobs run-now --job-id $DATABRICKS_JOB_ID
+          databricks jobs run-now \
+            --job-id $DATABRICKS_JOB_ID \
+            --python-params "--env ${ENV}"
+

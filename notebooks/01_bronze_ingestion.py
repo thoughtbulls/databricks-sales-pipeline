@@ -1,6 +1,12 @@
 # Databricks job parameter
-dbutils.widgets.text("env", "dev")
-env = dbutils.widgets.get("env")
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--env", required=True)
+args = parser.parse_args()
+
+env = args.env
+
 
 import sys
 
@@ -10,7 +16,9 @@ from src.config_loader import load_config_from_string
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
 
-raw = spark.read.text("/Volumes/dev_catalog/pipelines/configs/dev.yaml")
+config_path = f"/Volumes/{env}_catalog/pipelines/configs/{env}.yaml"
+
+raw = spark.read.text(config_path)
 raw_yaml = "\n".join([r.value for r in raw.collect()])
 cfg = load_config_from_string(raw_yaml) 
 
