@@ -5,9 +5,7 @@
       "task_key": "bronze",
       "spark_python_task": {
         "python_file": "/Shared/databricks-sales-pipeline/notebooks/01_bronze_ingestion.py",
-        "base_parameters": {
-          "env": "${ENV}"
-        }
+        "parameters": ["--env", "${ENV}"]
       },
       "job_cluster_key": "sales_cluster"
     }
