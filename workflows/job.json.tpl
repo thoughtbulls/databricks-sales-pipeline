@@ -7,6 +7,9 @@
         "python_file": "/Shared/databricks-sales-pipeline/notebooks/01_bronze_ingestion.py",
         "parameters": ["--env", "${ENV}"]
       },
+      "libraries": [
+          { "pypi": { "package": "pyyaml" } }
+        ], 
       "job_cluster_key": "sales_cluster"
     }
   ],
