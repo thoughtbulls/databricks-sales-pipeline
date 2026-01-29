@@ -20,7 +20,7 @@
 
         "libraries": [
           { "pypi": { "package": "pyyaml" } }
-        ] 
+        ], 
 
         "data_security_mode": "SINGLE_USER",
         "runtime_engine": "STANDARD",
