@@ -7,10 +7,37 @@
         "python_file": "/Shared/databricks-sales-pipeline/notebooks/01_bronze_ingestion.py",
         "parameters": ["--env", "${ENV}"]
       },
+
+      "job_cluster_key": "sales_cluster",
       "libraries": [
           { "pypi": { "package": "pyyaml" } }
-        ], 
-      "job_cluster_key": "sales_cluster"
+        ]
+    },
+    {
+      "task_key": "silver",
+      "depends_on": [{ "task_key": "bronze" }],
+      "spark_python_task": {
+        "python_file": "/Workspace/Shared/databricks-sales-pipeline/notebooks/02_silver_transformation.py",
+        "parameters": ["--env", "${ENV}"]
+      },
+
+      "job_cluster_key": "sales_cluster",
+      "libraries": [
+        { "pypi": { "package": "pyyaml" } }
+      ]
+    },
+    {
+      "task_key": "gold",
+      "depends_on": [{ "task_key": "silver" }],
+      "spark_python_task": {
+        "python_file": "/Workspace/Shared/databricks-sales-pipeline/notebooks/03_gold_aggregation.py",
+        "parameters": ["--env", "${ENV}"]
+      },
+
+      "job_cluster_key": "sales_cluster",
+      "libraries": [
+        { "pypi": { "package": "pyyaml" } }
+      ]
     }
   ],
   "job_clusters": [
