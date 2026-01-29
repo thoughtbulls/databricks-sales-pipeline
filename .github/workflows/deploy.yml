@@ -102,9 +102,9 @@ jobs:
         run: |
           databricks jobs configure --version=2.1
       
-      - name: Render job.json
-        run: |
-          envsubst < workflows/job.json.tpl > workflows/job.json
+      # - name: Render job.json
+      #   run: |
+      #     envsubst < workflows/job.json.tpl > workflows/job.json
 
       # ---- Safety check ----
       - name: Verify job exists
