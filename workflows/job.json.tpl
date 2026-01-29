@@ -16,7 +16,11 @@
       "new_cluster": {
         "spark_version": "13.3.x-scala2.12",
         "node_type_id": "m4.large",
-        "num_workers": 1, 
+        "num_workers": 1,
+
+        "libraries": [
+          { "pypi": { "package": "pyyaml" } }
+        ] 
 
         "data_security_mode": "SINGLE_USER",
         "runtime_engine": "STANDARD",
