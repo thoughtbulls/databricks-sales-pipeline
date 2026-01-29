@@ -82,9 +82,9 @@ jobs:
       # ---- Upload configs to Volume (NEW CLI supports dbfs:/Volumes) ----
       - name: Upload config files to Volume
         run: |
-          databricks fs mkdirs dbfs:/Volumes/dev_catalog/pipelines/configs || true
-          databricks fs cp configs/dev.yaml \
-            dbfs:/Volumes/dev_catalog/pipelines/configs/dev.yaml \
+          databricks fs mkdirs dbfs:/Volumes/"${ENV}"_catalog/pipelines/configs || true
+          databricks fs cp configs/"${ENV}".yaml \
+            dbfs:/Volumes/"${ENV}"_catalog/pipelines/configs/"${ENV}".yaml \
             --overwrite
 
       # =================================================
