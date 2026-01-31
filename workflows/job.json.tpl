@@ -46,7 +46,7 @@
       "new_cluster": {
         "spark_version": "${spark_version}",
         "node_type_id": "${node_type_id}",
-        "num_workers": 2,
+        "num_workers": "${num_workers}",
 
         "libraries": [
           { "pypi": { "package": "pyyaml" } }
