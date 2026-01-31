@@ -15,6 +15,11 @@ sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
 from src.config_loader import load_config_from_string
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("Sales Data Analysis") \
+    .getOrCreate()
 
 config_path = f"/Volumes/{env}_catalog/pipelines/configs/{env}.yaml"
 
@@ -40,7 +45,7 @@ df = (
     .csv(orders_file)
 )
 
-display(df)
+df.show()
 
 df.withColumn("ingesttime", current_timestamp()) \
   .write.format("delta") \

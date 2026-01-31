@@ -14,6 +14,11 @@ sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
 from src.config_loader import load_config_from_string
 from pyspark.sql.functions import col, row_number
 from pyspark.sql.window import Window
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("Sales Data Analysis") \
+    .getOrCreate()
 
 config_path = f"/Volumes/{env}_catalog/pipelines/configs/{env}.yaml"
 
