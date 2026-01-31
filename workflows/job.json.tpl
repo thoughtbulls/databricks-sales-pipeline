@@ -1,5 +1,5 @@
 {
-  "name": "sales_pipeline_${ENV}",
+  "name": "${JOB_NAME}",
   "tasks": [
     {
       "task_key": "bronze",
@@ -44,9 +44,9 @@
     {
       "job_cluster_key": "sales_cluster",
       "new_cluster": {
-        "spark_version": "13.3.x-scala2.12",
-        "node_type_id": "m4.large",
-        "num_workers": 1,
+        "spark_version": "${spark_version}",
+        "node_type_id": "${node_type_id}",
+        "num_workers": ${num_workers},
 
         "libraries": [
           { "pypi": { "package": "pyyaml" } }
