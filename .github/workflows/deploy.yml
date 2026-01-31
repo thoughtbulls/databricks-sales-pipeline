@@ -101,6 +101,11 @@ jobs:
       - name: Configure Jobs API 2.1
         run: |
           databricks jobs configure --version=2.1
+
+      - name: Install Python dependencies for CI
+        run: |
+          pip install pyyaml
+
       
       # - name: Render job.json
       #   run: |
