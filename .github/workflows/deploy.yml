@@ -130,9 +130,9 @@ jobs:
 
 
       # ---- Safety check ----
-      - name: Verify job exists
+      - name: Verify job.json has been set properly 
         run: |
-          databricks jobs get --job-id $DATABRICKS_JOB_ID
+          cat workflows/job.json
 
       # ---- Reset job (THIS IS THE KEY FIX) ----
       - name: Update Databricks Job

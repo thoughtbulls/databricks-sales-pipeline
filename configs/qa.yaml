@@ -9,4 +9,10 @@ schema_gold: gold
 raw_data_path: s3://amzn-s3-de-projects/raw
 checkpoint_path: /mnt/dev/checkpoints/sales
 
-cluster_workers: 3
+job:
+  name: sales_pipeline_qa
+
+cluster:
+  spark_version: 13.3.x-scala2.12
+  node_type_id: r5.xlarge
+  num_workers: 2
