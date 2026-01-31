@@ -44,9 +44,9 @@
     {
       "job_cluster_key": "sales_cluster",
       "new_cluster": {
-        "spark_version": "{{spark_version}}",
-        "node_type_id": "{{node_type_id}}",
-        "num_workers": "{{num_workers}}",
+        "spark_version": "{{SPARK_VERSION}}",
+        "node_type_id": "{{NODE_TYPE_ID}}",
+        "num_workers": "{{NUM_WORKERS}}",
 
         "libraries": [
           { "pypi": { "package": "pyyaml" } }
