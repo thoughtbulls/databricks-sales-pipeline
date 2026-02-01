@@ -5,7 +5,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--env", required=True)
 args = parser.parse_args()
 
-cfg = yaml.safe_load(open("configs/{args.env}.yaml"))
+cfg = yaml.safe_load(open(f"configs/{args.env}.yaml"))
 # cfg = yaml.safe_load(open("configs/dev.yaml"))
 tpl = open("workflows/job.json.tpl").read()
 

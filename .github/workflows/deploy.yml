@@ -112,7 +112,7 @@ jobs:
       #     envsubst < workflows/job.json.tpl > workflows/job.json
 
       - name: Render job.json
-        run: python scripts/render_job.py
+        run: python scripts/render_job.py --env $ENV
 
       # ---- Safety check ----
       - name: Verify job.json has been set properly 
