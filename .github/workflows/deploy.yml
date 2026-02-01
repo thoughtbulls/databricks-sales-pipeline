@@ -112,22 +112,7 @@ jobs:
       #     envsubst < workflows/job.json.tpl > workflows/job.json
 
       - name: Render job.json
-        run: |
-          python <<EOF
-          import yaml
-
-          cfg = yaml.safe_load(open("configs/${ENV}.yaml"))
-          tpl = open("workflows/job.json.tpl").read()
-
-          tpl = tpl.replace("{{ENV}}", cfg["env"])
-          tpl = tpl.replace("{{JOB_NAME}}", cfg["job"]["name"])
-          tpl = tpl.replace("{{SPARK_VERSION}}", cfg["cluster"]["spark_version"])
-          tpl = tpl.replace("{{NODE_TYPE_ID}}", cfg["cluster"]["node_type_id"])
-          tpl = tpl.replace("{{NUM_WORKERS}}", str(cfg["cluster"]["num_workers"]))
-
-          open("workflows/job.json", "w").write(tpl)
-          EOF
-
+        run: python scripts/render_job.py
 
       # ---- Safety check ----
       - name: Verify job.json has been set properly 
