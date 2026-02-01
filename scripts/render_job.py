@@ -1,7 +1,8 @@
 import yaml
 
-cfg = yaml.safe_load(open("../configs/${ENV}.yaml"))
-tpl = open("../workflows/job.json.tpl").read()
+# cfg = yaml.safe_load(open("configs/${ENV}.yaml"))
+cfg = yaml.safe_load(open("configs/dev.yaml"))
+tpl = open("workflows/job.json.tpl").read()
 
 tpl = tpl.replace("{{ENV}}", cfg["env"])
 tpl = tpl.replace("{{JOB_NAME}}", cfg["job"]["name"])
