@@ -6,7 +6,8 @@ schema_bronze: bronze
 schema_silver: silver
 schema_gold: gold
 
-raw_data_path: /mnt/c/Users/Thinkpad/Downloads/data/retail_db/
+# raw_data_path: /mnt/c/Users/Thinkpad/Downloads/data/retail_db/
+raw_data_path: s3://amzn-s3-de-projects/raw
 checkpoint_path: /mnt/dev/checkpoints/orders
 
 job:
