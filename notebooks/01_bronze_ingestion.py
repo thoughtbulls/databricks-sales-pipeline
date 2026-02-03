@@ -45,8 +45,8 @@ raw_df = (
 raw_df.show()
 bronze_df = transform_orders_bronze(raw_df)
 
-bronze_df.mode("overwrite") \
-  .write.format("delta") \
-  .saveAsTable(f"{catalog}.{bronze_schema}.orders")
+bronze_df.write.format("delta")\
+        .mode("overwrite") \
+        .saveAsTable(f"{catalog}.{bronze_schema}.orders")
 
 print(f"Bronze load completed for env={env}")
