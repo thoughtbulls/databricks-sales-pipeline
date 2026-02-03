@@ -8,7 +8,7 @@ def transform_orders_bronze(df: DataFrame)-> DataFrame:
     bronze_df = df.dropDuplicates(["order_id"]) \
     .withColumn("order_id", col("order_id").cast("int")) \
     .withColumn("order_date", col("order_date").cast("date"))\
-    .withColumn("customer_id", col("customer_id").cast("int")) \
+    .withColumn("order_customer_id", col("order_customer_id").cast("int")) \
     .withColumn("order_status", col("order_status").cast("string")) \
     .withColumn("ingested_at", current_timestamp())
     
