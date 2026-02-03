@@ -10,6 +10,6 @@ def aggregate_orders_gold(df: DataFrame) -> DataFrame:
         .groupBy("order_date")
         .agg(
             count("order_id").alias("total_orders"),
-            count(col("customer_id")).alias("total_customers")
+            count(col("order_customer_id")).alias("total_customers")
         )
     )
