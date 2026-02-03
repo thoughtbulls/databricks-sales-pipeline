@@ -1,12 +1,14 @@
 # Databricks job parameter
+import sys
+sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
+
 import argparse
 from pyspark.sql import SparkSession
 from src.config_loader import load_config
 from src.bronze import transform_orders_bronze
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
 
-import sys
-sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--env", required=True)
