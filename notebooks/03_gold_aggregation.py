@@ -11,7 +11,7 @@ import sys
 
 sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
 
-from src.config_loader import load_config_from_string
+from src.config_loader import load_config
 from pyspark.sql.functions import sum, count
 from pyspark.sql import SparkSession
 
@@ -21,9 +21,9 @@ spark = SparkSession.builder \
 
 config_path = f"/Volumes/{env}_catalog/pipelines/configs/{env}.yaml"
 
-raw = spark.read.text(config_path)
-raw_yaml = "\n".join([r.value for r in raw.collect()])
-cfg = load_config_from_string(raw_yaml) 
+# raw = spark.read.text(config_path)
+# raw_yaml = "\n".join([r.value for r in raw.collect()])
+cfg = load_config(config_path) 
 
 catalog = cfg["catalog"]
 silver_schema = cfg["schema_silver"]

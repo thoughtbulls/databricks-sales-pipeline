@@ -12,7 +12,7 @@ import sys
 
 sys.path.append("/Workspace/Shared/databricks-sales-pipeline")
 
-from src.config_loader import load_config_from_string
+from src.config_loader import load_config
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, DateType
 from pyspark.sql import SparkSession
@@ -22,10 +22,11 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 config_path = f"/Volumes/{env}_catalog/pipelines/configs/{env}.yaml"
+# config_path = "/home/naren/Projects/databricks-sales-pipeline/configs/dev.yaml"
 
-raw = spark.read.text(config_path)
-raw_yaml = "\n".join([r.value for r in raw.collect()])
-cfg = load_config_from_string(raw_yaml) 
+# raw = spark.read.text(config_path)
+# raw_yaml = "\n".join([r.value for r in raw.collect()])
+cfg = load_config(config_path) 
 
 catalog = cfg["catalog"]
 bronze_schema = cfg["schema_bronze"]
